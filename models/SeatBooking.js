@@ -14,19 +14,19 @@ const sequelize = new Sequelize(
     }
 )
 
-const StationModel = sequelize.define('Stations', {
-    stationId: {
+const SeatBookingModel = sequelize.define('Stations', {
+    trainId: {
         type: Sequelize.DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        primaryKey: true,
     },
-    name: {
-        type: Sequelize.DataTypes.STRING,
-        unique : true
+    userId: {
+        type: Sequelize.DataTypes.UUID,
+    },
+    seatNumber: {
+        type: Sequelize.DataTypes.INTEGER,
     }
 },
     {
         freezeTableName: true,
     })
 
-module.exports = StationModel
+module.exports = SeatBookingModel

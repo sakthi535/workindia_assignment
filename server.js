@@ -8,11 +8,16 @@ const app = express();
 app.use(bodyParser.json());
 
 const User = require('./models/User')
+const Train = require('./models/Train')
+const Station = require('./models/Station')
+
+const admin = require('./Auth/admin')
+const auth = require('./Auth/auth')
 
 const jwt = require("jsonwebtoken");
 
 const { registerUserSchema, loginUserSchema } = require('./validators/userValidationSchema')
-
+const { createTrainSchema } = require('./validators/trainValidationSchema')
 const baseUrl = "/api/v1"
 
 
@@ -75,6 +80,62 @@ app.post(`${baseUrl}/login`, async (req, res) => {
     }
   });
 
+
+app.post(`${baseUrl}/station`, async (req, res) => {
+    try {
+      const { name } = req.body;
+  
+      const user = await Station.create({name : name});
+
+      return res.status(201).json({ message: "ok"});
+    } catch (err) {
+      // Handle validation and other errors
+      return res.status(401).json({ message: err.message });
+    }
+  });
+
+
+app.post(`${baseUrl}/trains/create`,admin, async (req, res) => {
+    try {
+      // Validate username and password using loginUserSchema
+      const data = createTrainSchema.validateSync(req.body);
+  
+      const arrival_time = req.body[("arrival_time_at_source")]
+      const arrival_time_dest = req.body[("arrival_time_at_destination")]
+
+      const source = await Station.findOne({
+        where: {
+            name: data.source 
+        }
+      });
+  
+      const destination = await Station.findOne({
+        where: {
+            name: data.destination 
+        }
+      });
+
+      // If user doesn't exist, return error response
+      if (source == null || destination == null) {
+        return res.status(401).json({ message: "error", error: "No such Station exists" });
+      }
+  
+      const train = await Train.create({
+        name : data.train_name,
+        source : source.stationId,
+        destination : destination.stationId,
+        max_capacity : data.seat_capacity,
+        arrival_time_at_source : arrival_time,
+        arrival_time_at_destination : arrival_time_dest
+      })
+  
+      return res.status(201).json({ message: "Train added succesfully", train_id: train.trainId });
+    } catch (err) {
+      return res.status(401).json({ message: err.message });
+    }
+  });
+
+  
 
 
 

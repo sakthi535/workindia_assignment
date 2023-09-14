@@ -1,10 +1,10 @@
-const Sequalize = require('sequelize');
+const Sequelize = require('sequelize');
 
 const bcrypt = require('bcrypt');
 
 const config = require('../config/config')
 
-const sequelize = new Sequalize(
+const sequelize = new Sequelize(
     config.database,
     config.username,
     config.password,
@@ -16,27 +16,28 @@ const sequelize = new Sequalize(
 
 const TrainModel = sequelize.define('Trains', {
     trainId: {
-        type: Sequalize.DataTypes.UUID,
+        type: Sequelize.DataTypes.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true
     },
     name: {
-        type: Sequalize.DataTypes.STRING,
+        type: Sequelize.DataTypes.STRING,
         unique : true
     },
     max_capacity: {
-        type: Sequalize.DataTypes.INTEGER
+        type: Sequelize.DataTypes.INTEGER
     },
-    depature_time : {
-        type : Sequalize.DataTypes.TIME
+    arrival_time_at_source : {
+        type : Sequelize.DataTypes.TIME
     },
-    arrival_time :{
-        type : Sequalize.DataTypes.TIME
+    arrival_time_at_destination : {
+        type : Sequelize.DataTypes.TIME
     },
     source : {
-        type: Sequalize.DataTypes.UUID,
+        type: Sequelize.DataTypes.UUID,
     },
     destination : {
-        type: Sequalize.DataTypes.UUID,
+        type: Sequelize.DataTypes.UUID,
     }
 
 },

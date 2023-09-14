@@ -24,7 +24,7 @@ TrainModel.belongsTo(StationModel, {
 });
 
 const createModels = async () => {
-    await UserModel.sync({force : true})
+    await UserModel.sync()
     console.log("User model is in sync...")
 
     await StationModel.sync({force : true})
