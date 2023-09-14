@@ -3,7 +3,7 @@ const PASSWORD_REGEX = /^[a-zA-Z0-9]{8,}$/;
 
 const loginUserSchema = yup
     .object({
-        login: yup.string().trim().min(6).max(50).required(),
+        username: yup.string().trim().min(6).max(50).required(),
         password: yup.string().required(),
     })
     .required();
