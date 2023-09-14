@@ -17,7 +17,8 @@ const auth = require('./Auth/auth')
 const jwt = require("jsonwebtoken");
 
 const { registerUserSchema, loginUserSchema } = require('./validators/userValidationSchema')
-const { createTrainSchema } = require('./validators/trainValidationSchema')
+const { createTrainSchema } = require('./validators/trainValidationSchema');
+const SeatBookingModel = require('./models/SeatBooking');
 const baseUrl = "/api/v1"
 
 
@@ -135,7 +136,24 @@ app.post(`${baseUrl}/trains/create`,admin, async (req, res) => {
     }
   });
 
-  
+  app.post(`${baseUrl}/trains/:trainId/book`,auth, async (req, res) => {
+    try {
+      // Validate username and password using loginUserSchema
+      const {userId, no_of_seats} = (req.body);
+      const { trainId } = req.params;
+
+      await SeatBookingModel.create({
+        trainId : trainId,
+        userId : userId
+      })
+
+      return res.status(201).json({ message: "Seats added succesfully", train_id: train.trainId });
+    } catch (err) {
+      return res.status(401).json({ message: err.message });
+    }
+  });
+
+
 
 
 

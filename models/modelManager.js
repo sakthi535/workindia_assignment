@@ -1,7 +1,7 @@
 const UserModel = require('./User')
 const StationModel = require('./Station')
 const TrainModel = require('./Train')
-
+const SeatBookingModel = require('./SeatBooking')
 
 StationModel.hasMany(TrainModel, {
     foreignKey: "source",
@@ -22,6 +22,28 @@ TrainModel.belongsTo(StationModel, {
     foreignKey: "destination",
     sourceKey: "stationId"
 });
+
+TrainModel.hasMany(SeatBookingModel, {
+    foreignKey: "trainId",
+    sourceKey: "trainId"
+});
+
+SeatBookingModel.belongsTo(TrainModel, {
+    foreignKey: "trainId",
+    sourceKey: "trainId"
+});
+
+UserModel.hasMany(SeatBookingModel, {
+    foreignKey: "userId",
+    sourceKey: "userId"
+});
+
+SeatBookingModel.belongsTo(UserModel, {
+    foreignKey: "userId",
+    sourceKey: "userId"
+});
+
+
 
 const createModels = async () => {
     await UserModel.sync()
@@ -32,6 +54,10 @@ const createModels = async () => {
 
     await TrainModel.sync({force : true})
     console.log("Train Model is in sync...")
+
+    await SeatBookingModel.sync({force : true})
+    console.log("Seat Booking Model is in sync...")
+
 
 }
 

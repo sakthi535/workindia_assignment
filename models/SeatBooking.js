@@ -14,12 +14,13 @@ const sequelize = new Sequelize(
     }
 )
 
-const SeatBookingModel = sequelize.define('Stations', {
+const SeatBookingModel = sequelize.define('SeatBooking', {
+
     trainId: {
         type: Sequelize.DataTypes.UUID,
     },
     userId: {
-        type: Sequelize.DataTypes.UUID,
+        type: Sequelize.DataTypes.INTEGER,
     },
     seatNumber: {
         type: Sequelize.DataTypes.INTEGER,
