@@ -51,13 +51,5 @@ UserModel.prototype.validPassword = function (password) {
 }
 
 
-const createModels = async () => {
-    await UserModel.sync()
-    console.log("User model is in sync...")
-
-}
-
-createModels();
-
 
 module.exports = UserModel

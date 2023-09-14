@@ -2,6 +2,8 @@ const { Op } = require('sequelize');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+require('./models/modelManager')
+
 const app = express();
 app.use(bodyParser.json());
 
